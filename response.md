@@ -28,7 +28,7 @@ API LINK: [go here](https://pharmacymask.docs.apiary.io/#).
 ### A.3. Import Data Commands
 
 ```bash
-$ python3 source_data_processor
+$ python3 source_data_processor.py
 ```
 ## B. Bonus Information
 
