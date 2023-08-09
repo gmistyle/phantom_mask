@@ -15,7 +15,7 @@ bp_pharmacy_api = Blueprint('bp_pharmacy_api', __name__, url_prefix=f'{SERVER_PR
 
 @bp_pharmacy_api.route('/v1/pharmacies/names', methods=['GET'])
 @token_required
-def search_by_business_hour():
+def search_by_opening_hour():
     if request.method != 'GET':
         abort(405)
         
@@ -38,14 +38,14 @@ def search_by_business_hour():
         }
         return jsonify(resp), 400, HEADERS
 
-@bp_pharmacy_api.route('/v1/pharmacies/business_hour', methods=['GET'])
+@bp_pharmacy_api.route('/v1/pharmacies/opening_hour', methods=['GET'])
 @token_required
-def search_by_business_hour():
+def search_by_opening_hour():
     if request.method != 'GET':
         abort(405)
         
     query_conditions = PharmacyConditions(
-        business_hour=request.args.get('business_hour'),
+        opening_hour=request.args.get('opening_hour'),
         day_of_week=request.args.get('day_of_week')
     )
 
@@ -53,7 +53,7 @@ def search_by_business_hour():
         resp = {
             "is_success": True,
             "message": "OK",
-            "data": PharmacyService.find_pharmacy_business_hour(query_conditions)
+            "data": PharmacyService.find_pharmacy_opening_hour(query_conditions)
         }
         return jsonify(resp), 200, HEADERS
     except Exception as e:

@@ -1,10 +1,14 @@
 # Response
-> Since the actual time to develop this project is only about 1 days, I will focus on showing my usual project structure and coding style. At last, I failed to finish them all (data import, encapsulation, some typo fixed) Sorry!
+> These Project focused on showing my usual project structure and coding style.
+> I usually build project in three part : blueprint, database, service.
+>> Blueprint : Contains many Flask router object. one or multiple service(s) will be utilized in one router. the API response (JSON) is composed by the service(s) return.
+>> Database : Contains Table Schema object, sqlalchemy engine, DAO(not using orm). I choose to build my own Data Access Object because it is more easy and flexible for myself to achieve my goal to finish a Query.
+>> Service : All feature logic and functionalities.
 
 ## A. Required Information
 ### A.1. Requirement Completion Rate
 - [x] List all pharmacies open at a specific time and on a day of the week if requested.
-  - Implemented at API: `GET {base_url}/api/v1/pharmacies/business_hour`.
+  - Implemented at API: `GET {base_url}/api/v1/pharmacies/opening_hour`.
 - [x] List all masks sold by a given pharmacy, sorted by mask name or price.
   - Implemented at API: `GET {base_url}/api/v1/pharmacies/{pharmacy_id}/masks`.
 - [x] List all pharmacies with more or less than x mask products within a price range.
@@ -23,53 +27,8 @@
 
 API LINK: [go here](https://pharmacymask.docs.apiary.io/#).
 
-## Memo : Not done from here below
-
 ### A.3. Import Data Commands
 
 ```bash
-$ python3 source_data_processor.py
+$ python3 import_source_data_script.py
 ```
-## B. Bonus Information
-
->  If you completed the bonus requirements, please fill in your task below.
-### B.1. Test Coverage Report
-
-I wrote down the 20 unit tests for the APIs I built. Please check the test coverage report at [here](#test-coverage-report).
-
-You can run the test script by using the command below:
-
-```ruby
-bundle exec rspec spec
-```
-
-### B.2. Dockerized
-Please check my Dockerfile / docker-compose.yml at [here](#dockerized).
-
-On the local machine, please follow the commands below to build it.
-
-```bash
-$ docker build --build-arg ENV=development -p 80:3000 -t my-project:1.0.0 .  
-$ docker-compose up -d
-
-# go inside the container, run the migrate data command.
-$ docker exec -it my-project bash
-$ rake import_data:pharmacies[PATH_TO_FILE]
-$ rake import_data:user[PATH_TO_FILE]
-```
-
-### B.3. Demo Site Url
-
-The demo site is ready on [heroku](#demo-site-url); you can try any APIs on this demo site.
-
-## C. Other Information
-
-### C.1. ERD
-
-My ERD [erd-link](#erd-link).
-
-### C.2. Technical Document
-
-For frontend programmer reading, please check this [technical document](technical-document) to know how to operate those APIs.
-
-- --

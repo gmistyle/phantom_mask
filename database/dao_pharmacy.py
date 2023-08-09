@@ -2,7 +2,7 @@ import datetime
 from sqlalchemy import select, update, desc, and_, or_, text
 from dataclasses import dataclass
 from engine import ENGINE
-from tables import DB_pharmacy, DB_product_list, DB_mask, DB_pharmacy_business_hours
+from tables import DB_pharmacy, DB_product_list, DB_mask, DB_pharmacy_opening_hours
 
 
 @dataclass
@@ -10,7 +10,7 @@ class PharmacyConditions:
     search_keyword: str = None
     # pharmacy
     pharmacy_id: int = None
-    business_hour: datetime.time = None
+    opening_hour: datetime.time = None
     day_of_week: int = None, 'enum from 1 to 7, representing Monday to Sunday'
     # Product
     min_price: int = None
@@ -30,12 +30,12 @@ class PharmacyConditionProcessor:
             filters.append(DB_pharmacy.c.id == condition.pharmacy_id)
 
         # business hour
-        if condition.business_hour:
-            filters.append(DB_pharmacy_business_hours.c.open_time <= condition.business_hour)
-            filters.append(DB_pharmacy_business_hours.c.close_time >= condition.business_hour)
+        if condition.opening_hour:
+            filters.append(DB_pharmacy_opening_hours.c.open_time <= condition.opening_hour)
+            filters.append(DB_pharmacy_opening_hours.c.close_time >= condition.opening_hour)
     
         if condition.day_of_week:
-            filters.append(DB_pharmacy_business_hours.c.day_of_week.in_(condition.day_of_week))
+            filters.append(DB_pharmacy_opening_hours.c.day_of_week.in_(condition.day_of_week))
 
         # product price
         if condition.min_price:
@@ -62,18 +62,20 @@ class PharmacyDao:
     _alias_mask_name = "mask_name"
     _alias_product_sales_price = "mask_price"
 
-    # pharmacy join business_hour
-    def query_pharmacy_join_business_hour(self, where_clause):
+    # pharmacy join opening_hour
+    def query_pharmacy_join_opening_hour(self, where_clause):
         with ENGINE.connect() as cnx:
             query = cnx.execute(select([
                 DB_pharmacy.c.id.label(self._alias_pharmacy_id),
                 DB_pharmacy.c.name.label(self._alias_pharmacy_name),
                 DB_pharmacy.c.balance.label(self._alias_pharmacy_balance),
-                DB_pharmacy_business_hours.c.day_of_week.label(self._alias_Pharmacy_business_day_of_week),
-                DB_pharmacy_business_hours.c.open_time.label(self._alias_pharmacy_open_time),
-                DB_pharmacy_business_hours.c.close_time.label(self._alias_pharmacy_close_time)
+                DB_pharmacy_opening_hours.c.day_of_week.label(self._alias_Pharmacy_business_day_of_week),
+                DB_pharmacy_opening_hours.c.open_time.label(self._alias_pharmacy_open_time),
+                DB_pharmacy_opening_hours.c.close_time.label(self._alias_pharmacy_close_time)
             ]).select_from(
-                DB_pharmacy.join(DB_pharmacy_business_hours, DB_pharmacy.c.id == DB_pharmacy_business_hours.c.pharmacy_id)
+                DB_pharmacy.join(DB_pharmacy_opening_hours, DB_pharmacy.c.id == DB_pharmacy_opening_hours.c.pharmacy_id)
+            ).order_by(
+                DB_pharmacy_opening_hours.c.day_of_week
             ).where(where_clause)).fetchall()
 
         return query

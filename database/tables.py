@@ -1,8 +1,7 @@
 from sqlalchemy import Table, Column, Integer, String, DateTime, Time, Float, Boolean, ForeignKey, MetaData
 from sqlalchemy.sql.schema import Index
 from sqlalchemy.dialects.mysql import TINYINT
-from model.metadata import METADATA
-from model.engine import ENGINE
+from database.engine import ENGINE
 
 
 METADATA = MetaData()
@@ -12,6 +11,7 @@ def create_tables():
     Create tables in database if not exists
     '''
     METADATA.create_all(ENGINE)
+
 # 藥局
 DB_pharmacy = Table('pharmacy', METADATA,
     Column('id', Integer(), primary_key=True, autoincrement=True),
@@ -43,7 +43,7 @@ DB_product_list = Table('product_list', METADATA,
 )
 
 # 藥局營業時間
-DB_pharmacy_business_hours = Table('pharmacy_opening_hours', METADATA,
+DB_pharmacy_opening_hours = Table('pharmacy_opening_hours', METADATA,
     Column('id', Integer(), primary_key=True, autoincrement=True),
     Column('pharmacy_id', Integer(), ForeignKey('pharmacy.id'), nullable=False),
     Column('day_of_week', TINYINT(), nullable=False),

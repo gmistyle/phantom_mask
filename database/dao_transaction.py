@@ -35,7 +35,7 @@ class TransactionConditionProcessor:
             filters.append(DB_transaction_history.c.id == condition.transaction_id)
 
         # business hour
-        if condition.business_hour:
+        if condition.transaction_start_date and condition.transaction_end_date:
             filters.append(DB_transaction_history.c.transaction_date <= condition.transaction_start_date)
             filters.append(DB_transaction_history.c.transaction_date >= condition.transaction_end_date)
 
