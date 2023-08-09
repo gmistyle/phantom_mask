@@ -1,9 +1,11 @@
-# Response
-> These Project focused on showing my usual project structure and coding style.
-> I usually build project in three part : blueprint, database, service.
->> Blueprint : Contains many Flask router object. one or multiple service(s) will be utilized in one router. the API response (JSON) is composed by the service(s) return.
->> Database : Contains Table Schema object, sqlalchemy engine, DAO(not using orm). I choose to build my own Data Access Object because it is more easy and flexible for myself to achieve my goal to finish a Query.
->> Service : All feature logic and functionalities.
+# Introduction
+> These Project focused on showing my usual project structure and coding style. 
+
+I usually build project in three part : `Blueprint, Database, Service`.
+
+- `Blueprint` : Contains many Flask router object. one or multiple service(s) will be utilized in one router. the API response is composed by the service(s) return.
+- `Database` : Contains Table Schema object, sqlalchemy engine, DAO (not using orm). I choose to build my own Data Access Object because it is more easy and flexible for myself to achieve my goal to finish a Query.
+- `Service` : All feature logic and functionalities.
 
 ## A. Required Information
 ### A.1. Requirement Completion Rate
